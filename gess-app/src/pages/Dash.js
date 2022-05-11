@@ -4,7 +4,7 @@ const Dash = () =>{
     return(
         <div>
         <nav className="nav2">
-        <Link to="overview" className="lin2">Overview</Link>
+        <Link to="overview" className="lin2">Overvie</Link>
         <Link to="dashboard" className="lin2">Configure</Link>  
       </nav>
       <Outlet />
