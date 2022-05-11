@@ -218,7 +218,7 @@ app.post('/api/create/assigne',async(req,res)=>{
 		await Enseignant.findOneAndUpdate(query1,update1,options)
 		res.json({status:'ok'})
 	}catch(error){
-		res.json({status:'error', error:'Some Error Occur'})
+		res.json({status:'erro', error:'Some Error Occur'})
 		console.log(error.message);
 	}
 })
