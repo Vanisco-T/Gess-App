@@ -1,0 +1,14 @@
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
+const Dash = () =>{
+    return(
+        <div>
+        <nav className="nav2">
+        <Link to="overview" className="lin2">Overview</Link>
+        <Link to="dashboard" className="lin2">Configure</Link>  
+      </nav>
+      <Outlet />
+      </div>
+    );
+}
+export default Dash
