@@ -411,3 +411,8 @@ ul{
 .inside h3{
  font-size: 55px;
 }
+.icon{
+  font-size: 35px;
+  background-color: #fff;
+  border: none;
+}
