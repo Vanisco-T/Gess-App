@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import * as Icons from "react-icons/fa";
 const Dash = () =>{
+  const n=[]
     return(
         <div>
         <nav className="nav2">
