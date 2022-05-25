@@ -1,16 +1,19 @@
+import {CSVLink} from "react-csv"
 import BootstrapTable from 'react-bootstrap-table-next';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from "react";
+import Pdf from "react-to-pdf";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.css';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import 'react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css';
+import Button from "react-bootstrap/Button";
 import filterFactory ,{textFilter} from 'react-bootstrap-table2-filter';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import cellEditFactory from 'react-bootstrap-table2-editor';
  require('react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css');
 
-
  
-
+ const ref = React.createRef();
 function Datalist(){
     const selectRow={
         mode:"checkbox",
@@ -18,8 +21,10 @@ function Datalist(){
         clickToSelect:false
     }
     
+
+   
     const columns =[
-        {dataField:'id',text:'ID'},
+        {dataField:'id',text:'ID',hidden:true},
         {dataField:'name',text:'Name', sort:true,filter:textFilter(),editable:true},
         {dataField:'username',text:'Username', sort:true,filter:textFilter()},
         {dataField:'email',text:'Email', sort:true,filter:textFilter()},
@@ -99,7 +104,19 @@ function Datalist(){
       ];
    
     return(
-        <div>
+        <div >
+            <Button variant="dark" >
+            <CSVLink
+                    data={products}
+                    filename={"note.csv"}
+                  >
+                    Export CSV
+                  </CSVLink>
+             </Button>
+             <Pdf targetRef={ref} filename="note.pdf">
+        {({ toPdf }) => <Button onClick={toPdf}>Export Pdf</Button>}
+      </Pdf>
+            <div ref={ref}>
             <BootstrapTable 
              bootstrap4 
              keyField='id' 
@@ -120,6 +137,7 @@ function Datalist(){
                  ]
              }     
                  /> 
+                 </div>
         </div> 
     );
 }
