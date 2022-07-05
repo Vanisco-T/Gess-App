@@ -9,7 +9,7 @@ const User = new mongoose.Schema(
         filiere: { type: String, required:true },
         niveau: { type: String, required: true },
 		password: { type: String, required: true },
-		quote: { type: String },
+		role: { type: String,required:true }
 	},
 	{ collection: 'user-data' }
 )

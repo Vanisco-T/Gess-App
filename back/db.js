@@ -123,18 +123,38 @@ app.post('/api/register', async (req, res) => {
 		const newPassword = await bcrypt.hash(req.body.password, 10)
 		await User.create({
 			name: req.body.name,
-      surname: req.body.surname,
-      matricule: req.body.matricule,
+      		surname: req.body.surname,
+      		matricule: req.body.matricule,
 			email: req.body.email,
-      filiere: req.body.filiere,
-      niveau: req.body.niveau,
-			password: newPassword
+		  	filiere: req.body.filiere,
+      		niveau: req.body.niveau,
+			password: newPassword,
+			role:"etudiant"
 		})
 		res.json({ status: 'ok' })
 	} catch (err) {
 		res.json({ status: 'error', error: 'Duplicate email Or Matricule' })
 	}
 })
+
+
+app.post('/api/ajouter/enseignant', async (req, res) => {
+	console.log(req.body)
+	try {
+		const newPassword = await bcrypt.hash(req.body.password, 10)
+		await Enseignant.create({
+			nom: req.body.nom,
+      		prenom: req.body.prenom,
+			email: req.body.email,
+			password: newPassword,
+			role:"enseignant"
+		})
+		res.json({ status: 'ok' })
+	} catch (err) {
+		res.json({ status: 'error', error: 'Duplicate email Or Matricule' })
+	}
+})
+
 
 app.post('/api/create/filiere',async (req,res)=>{
 	console.log(req.body)
@@ -154,6 +174,7 @@ app.post('/api/create/niveau',async (req,res)=>{
 	try{
 		var filiere = await Filiere.findOne({nom:req.body.name})
 		console.log(filiere._id)
+		console.log(req.body.newRowStr)
 		  filiere = await createNiveau(filiere._id, {
 			nom: req.body.newRowStr
 		  });
@@ -224,14 +245,18 @@ app.post('/api/create/assigne',async(req,res)=>{
 })
 
 app.post('/api/login', async (req, res) => {
-	const user = await User.findOne({
+	let user = await User.findOne({
 		email: req.body.email,
 	})
-
+	let enseignant = await Enseignant.findOne({
+		email: req.body.email,
+	})
 	if (!user) {
-		return { status: 'error', error: 'Invalid login' }
+		if(!enseignant){
+			return { status: 'error', error: 'Invalid login' }
+		}
+		user=enseignant
 	}
-
 	const isPasswordValid = await bcrypt.compare(
 		req.body.password,
 		user.password
@@ -321,11 +346,6 @@ app.post('/api/quote', async (req, res) => {
 	}
 })
 
-
-if(process.env.NODE_ENV === "production"){
-	app.use(express.static(path.join("gess-app/build")))
-	app.get("*",(req,res)=>res.sendFile(path.resolve(__dirname,'gess-app','build','index.html')))
-}
 
 const PORT = process.env.PORT || 1337
 app.listen(PORT, () => {
